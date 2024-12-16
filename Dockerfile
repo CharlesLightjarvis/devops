@@ -16,3 +16,14 @@ COPY . .
 
 # Compiler le projet Angular
 RUN npm run build
+
+
+### STAGE 2: Run ###
+# Utiliser une image Nginx légère
+FROM nginx:1.17.1-alpine
+
+# Copier le fichier de configuration nginx.conf dans l'image
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copier les fichiers générés dans le Stage 1 vers le dossier de déploiement de Nginx
+COPY --from=build /usr/src/app/dist/aston-villa-app /usr/share/nginx/html
